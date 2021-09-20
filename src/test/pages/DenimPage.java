@@ -14,7 +14,7 @@ public class DenimPage extends BasePage {
 
     @FindBy(css = "li:nth-child(4) > a#navigation-denim")
     public WebElement denimBtn;
-    git push -u origin main
+
     @FindBy(css = "div[class$='rte'] > div:nth-child(2)")
     public WebElement denimText;
 

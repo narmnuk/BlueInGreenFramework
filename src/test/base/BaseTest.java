@@ -3,39 +3,51 @@ package base;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import utils.ConfigReader;
-import utils.ScreenShot;
+import utils.Screeshot;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
 
-    public WebDriver driver;
-    protected ExtentReports extentReports;
-    protected ExtentTest extentTest;
-    String configPath = "src/test/data/config/config.properties";
+    private static final ThreadLocal<WebDriver> allDrivers = new ThreadLocal<>();
+    private static final ThreadLocal<ExtentTest> allExtentTests = new ThreadLocal<>();
+    private ExtentReports extentReports;
+    private final String configPath = "src/test/data/config/config.properties";
 
     @BeforeMethod
     public void setUpDriver(Method method) {
 
         browserDriver(ConfigReader.readProperty(configPath, "browser"));
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        driver.get(ConfigReader.readProperty(configPath, "url"));
+        getDriver().get(ConfigReader.readProperty(configPath, "url"));
 
-        extentTest = extentReports.createTest(getTestName(method));
+        ExtentTest extentTest = extentReports.createTest(getTestName(method));
+        allExtentTests.set(extentTest);
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
 
-        driver.close();
+        if (result.getStatus() == ITestResult.SUCCESS) {
+            getExtentTest().pass(MarkupHelper.createLabel("PASSED", ExtentColor.GREEN));
+        } else if (result.getStatus() == ITestResult.FAILURE) {
+            getExtentTest().fail(MarkupHelper.createLabel("FAILED", ExtentColor.RED));
+            getExtentTest().fail(result.getThrowable());
+        } else if (result.getStatus() == ITestResult.SKIP) {
+            getExtentTest().fail(MarkupHelper.createLabel("SKIPPED", ExtentColor.ORANGE));
+            getExtentTest().fail(result.getThrowable());
+        }
+
+        getDriver().quit();
     }
 
     @BeforeSuite
@@ -63,18 +75,19 @@ public class BaseTest {
         return method.getName();
     }
 
-    public void logScreenShot(String title) {
+    public void logScreenshotPic(String title) {
 
-        extentTest.info(title, MediaEntityBuilder.createScreenCaptureFromBase64String(ScreenShot.takeScreenshot(driver)).build());
+        getExtentTest().info(title, MediaEntityBuilder.createScreenCaptureFromBase64String(Screeshot.takeScreenshot(getDriver())).build());
     }
 
-//    public void ScreenShotPic(){
+//    public void ScreenshotPic(){
 //
-//        extentTest.info(MediaEntityBuilder.createScreenCaptureFromBase64String(ScreenShot.takeScreenshot(driver)).build());
+//       getExtentTest().info(MediaEntityBuilder.createScreenCaptureFromBase64String(Screenshot.takeScreenshot(getDriver())).build());
 //    }
 
     public void browserDriver(String browser) {
 
+        WebDriver driver = null;
         switch (browser) {
             case "Chrome":
                 WebDriverManager.chromedriver().setup();
@@ -86,5 +99,19 @@ public class BaseTest {
                 driver = new FirefoxDriver();
                 break;
         }
+
+        allDrivers.set(driver);
+        getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        getDriver().manage().window().maximize();
+    }
+
+    public WebDriver getDriver() {
+
+        return allDrivers.get();
+    }
+
+    public ExtentTest getExtentTest() {
+
+        return allExtentTests.get();
     }
 }

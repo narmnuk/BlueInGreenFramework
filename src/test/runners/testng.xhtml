@@ -1,0 +1,13 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name = "Test Suite" parallel = "methods" thread-count = "">
+  <test name = "Blue In Green Tests">
+    <classes>
+      <class name = "tests.DenimTest"/>
+      <method>
+        <include name= "test01"/>
+      </method>
+    </classes>
+  </test>
+</suite>

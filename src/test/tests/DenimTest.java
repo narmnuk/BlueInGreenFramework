@@ -15,14 +15,14 @@ public class DenimTest extends BaseTest {
     @BeforeMethod
     public void setUp() {
 
-        denimPage = new DenimPage(driver);
+        denimPage = new DenimPage(getDriver());
     }
 
-    @Test(testName = "Denim Page", description = "Verify Title & Print Text")
+    @Test(testName = "Denim Test", description = "Verify Title & Print Text")
     public void test01() {
 
-        extentTest.assignAuthor("Jackie Natt");
-        extentTest.assignDevice("OS: Mac");
+        getExtentTest().assignAuthor("Jackie Natt");
+        getExtentTest().assignDevice("OS: Mac");
         denimPage.click(denimPage.denimBtn);
         denimPage.threadSleepMethod(3000);
 
@@ -30,13 +30,13 @@ public class DenimTest extends BaseTest {
         String actual = denimPage.getTitleMethod();
 
         if (actual.equals(expected)) {
-            extentTest.pass(MarkupHelper.createLabel("PASSED: " + actual, ExtentColor.GREEN));
+            getExtentTest().pass(MarkupHelper.createLabel("PASSED: " + actual, ExtentColor.GREEN));
         } else {
-            extentTest.fail(MarkupHelper.createLabel("FAILED: " + actual, ExtentColor.RED));
+            getExtentTest().fail(MarkupHelper.createLabel("FAILED: " + actual, ExtentColor.RED));
         }
 
         Assert.assertEquals(actual, expected);
-        logScreenShot("Denim Page");
+        logScreenshotPic("Denim Page");
 
         System.out.println(denimPage.denimText.getText());
     }
