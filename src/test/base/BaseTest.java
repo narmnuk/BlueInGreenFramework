@@ -13,7 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import utils.ConfigReader;
-import utils.Screeshot;
+import utils.Screenshot;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
@@ -77,7 +77,7 @@ public class BaseTest {
 
     public void logScreenshotPic(String title) {
 
-        getExtentTest().info(title, MediaEntityBuilder.createScreenCaptureFromBase64String(Screeshot.takeScreenshot(getDriver())).build());
+        getExtentTest().info(title, MediaEntityBuilder.createScreenCaptureFromBase64String(Screenshot.takeScreenshot(getDriver())).build());
     }
 
 //    public void ScreenshotPic(){

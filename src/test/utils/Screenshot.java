@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
-public class Screeshot extends BaseTest {
+public class Screenshot extends BaseTest {
 
     public static String takeScreenshot(WebDriver driver) {
 

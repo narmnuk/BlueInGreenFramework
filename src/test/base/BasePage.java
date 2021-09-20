@@ -20,9 +20,9 @@ public class BasePage {
         return driver.getTitle();
     }
 
-    public void scroll(int y, int x) {
+    public void scroll(int number) {
 
-        ((JavascriptExecutor)driver).executeScript("window.scrollBy(" + y + ", " + x + ")");
+        ((JavascriptExecutor)driver).executeScript("window.scrollBy(0, " + number + ")");
     }
 
     public void click(WebElement element) {

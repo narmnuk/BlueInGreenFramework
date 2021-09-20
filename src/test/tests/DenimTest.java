@@ -53,7 +53,7 @@ public class DenimTest extends BaseTest {
             System.out.println(denimPage.checkBoxes.get(ch).getText());
         }
 
-        denimPage.scroll(0, 400);
+        denimPage.scroll(400);
         logScreenshotPic("Verify Checkbox");
     }
 }
