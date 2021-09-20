@@ -20,6 +20,11 @@ public class BasePage {
         return driver.getTitle();
     }
 
+    public void scroll(int y, int x) {
+
+        ((JavascriptExecutor)driver).executeScript("window.scrollBy(" + y + ", " + x + ")");
+    }
+
     public void click(WebElement element) {
 
         highLightElement(element);

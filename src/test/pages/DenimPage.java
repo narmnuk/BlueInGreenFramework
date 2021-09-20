@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class DenimPage extends BasePage {
 
     public DenimPage(WebDriver driver) {
@@ -17,5 +19,8 @@ public class DenimPage extends BasePage {
 
     @FindBy(css = "div[class$='rte'] > div:nth-child(2)")
     public WebElement denimText;
+
+    @FindBy(css = "span.gf-label")
+    public List<WebElement> checkBoxes;
 
     }

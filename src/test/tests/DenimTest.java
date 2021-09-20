@@ -16,13 +16,13 @@ public class DenimTest extends BaseTest {
     public void setUp() {
 
         denimPage = new DenimPage(getDriver());
-    }
-
-    @Test(testName = "Denim Test", description = "Verify Title & Print Text")
-    public void test01() {
-
         getExtentTest().assignAuthor("Jackie Natt");
         getExtentTest().assignDevice("OS: Mac");
+    }
+
+    @Test(testName = "Verify Denim Page", description = "Verify Title & Print Text")
+    public void test01() {
+
         denimPage.click(denimPage.denimBtn);
         denimPage.threadSleepMethod(3000);
 
@@ -36,8 +36,24 @@ public class DenimTest extends BaseTest {
         }
 
         Assert.assertEquals(actual, expected);
-        logScreenshotPic("Denim Page");
+        logScreenshotPic("Verify Denim Page");
 
         System.out.println(denimPage.denimText.getText());
+    }
+
+    @Test(testName = "Verify Checkbox", description = "Verify All Checkboxes")
+    public void test02() {
+
+        denimPage.click(denimPage.denimBtn);
+        denimPage.threadSleepMethod(3000);
+
+        for (int ch = 0; ch < denimPage.checkBoxes.size(); ch++) {
+
+            Assert.assertTrue(denimPage.checkBoxes.get(ch).isDisplayed());
+            System.out.println(denimPage.checkBoxes.get(ch).getText());
+        }
+
+        denimPage.scroll(0, 400);
+        logScreenshotPic("Verify Checkbox");
     }
 }
